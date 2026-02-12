@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class JobWorkerJobWorkerService {
 
-    public Map<String, Object> findUserImpl(  String userId) {
+    public Map<String, Object> findUserImpl(String userId) {
         Map<String, Object> outputs = new HashMap<>();
         Boolean tmp = DmnAndFeelEvaluator.evaluateUserIsFound(userId);
         outputs.put("isFound", tmp);
