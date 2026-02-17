@@ -10,11 +10,15 @@ import org.camunda.bpm.dmn.feel.impl.FeelEngine;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.context.VariableContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.Map;
 
 public class DmnAndFeelEvaluator {
+	
+	private static final Logger log =LoggerFactory.getLogger(DmnAndFeelEvaluator.class);
 
 
     private static final DefaultDmnEngineConfiguration CONFIG = (DefaultDmnEngineConfiguration) DefaultDmnEngineConfiguration.createDefaultDmnEngineConfiguration();
@@ -78,9 +82,9 @@ public class DmnAndFeelEvaluator {
 
     public static void main(String[] args) {
 
-        System.out.println("DMN: " + evaluateUserIsFound("007"));
+        log.info("DMN: " + evaluateUserIsFound("007"));
 
-        System.out.println("FEEL 1: " +
+        log.info("FEEL 1: " +
                 evaluateFeel(
                         "userId = \"007\"",
                         Map.of("userId", "007")

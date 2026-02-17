@@ -19,7 +19,7 @@ public class JobWorkerJobWorker {
     private final JobWorkerJobWorkerService service;
 
     @JobWorker(type = "com.capbpm.c8.JobWorker.FindUser:v.1.1", fetchVariables = {"userId"})
-    public Map<String, Object> findUser(final ActivatedJob job, @Variable  String userId) {
+    public Map<String, User> findUser(final ActivatedJob job, @Variable  String userId) {
     final String  METHOD_NAME= "JobWorker.findUser";
     Map<String,Object> inputVarMap = job.getVariablesAsMap();
         log.trace(METHOD_NAME+" started...");
