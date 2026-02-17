@@ -20,7 +20,7 @@ public class PatientClient {
      * Calls the patients API and returns the "content" array
      * as a List<Map<String, Object>>.
      */
-    public static List<Map<String, Object>> loadPatients(int page, int size) throws Exception {
+    public static List<Map<String, PatientClient>> loadPatients(int page, int size) throws Exception {
 
         String url = String.format(
                 "https://api.capbpm.com/api/patients/load?page=%d&size=%d",
@@ -54,7 +54,7 @@ public class PatientClient {
         // Convert to List<Map<String, Object>>
         return MAPPER.convertValue(
                 contentNode,
-                new TypeReference<List<Map<String, Object>>>() {}
+                new TypeReference<List<Map<String, PatientClient>>>() {}
         );
     }
 
