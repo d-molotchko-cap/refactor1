@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="PatientRiskDecisions" name="PatientRiskDecisions" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="DeterminePatientRiskLevel" name="Determine Patient Risk Level">
+    <extensionElements>
+      <zeebe:versionTag value="1.0.0" />
+    </extensionElements>
+    <decisionTable id="DecisionTable_1e3ud3g" hitPolicy="FIRST">
+      <input id="Input_1">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>patient.bmi</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0rkc1xu" biodi:width="192">
+        <inputExpression id="LiteralExpression_1qwhb3s" typeRef="number">
+          <text>patient.glucoseLevel</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0qinuxp" biodi:width="192">
+        <inputExpression id="LiteralExpression_0xew45q" typeRef="boolean">
+          <text>patient.hasDiabetes</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1df5rzr">
+        <inputExpression id="LiteralExpression_08tb9po" typeRef="boolean">
+          <text>patient.hasHypertension</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_00mksnq">
+        <inputExpression id="LiteralExpression_0vpfrkn" typeRef="number">
+          <text>patient.erVisitsLast12Months</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_08ttu75" biodi:width="192">
+        <inputExpression id="LiteralExpression_01r51to" typeRef="boolean">
+          <text>patient.medicationAdherent</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" name="riskLevel" typeRef="string" />
+      <output id="OutputClause_1x5daxk" name="highReadmissionRisk" typeRef="boolean" />
+      <rule id="DecisionRule_0fqjr1z">
+        <inputEntry id="UnaryTests_07nilgt">
+          <text>&gt; 30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mc1r2p">
+          <text>&gt; 140</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c3fiwb">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qxecoe">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19qe2xd">
+          <text>&gt;= 1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e46kqh">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01ug08o">
+          <text>"High"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wsquu0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18g5q6m">
+        <inputEntry id="UnaryTests_1q6vq6e">
+          <text>&gt; 30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0b7e8uj">
+          <text>&gt; 140</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q2e327">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1awcftt">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0eb1p0j">
+          <text>&lt; 1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c7a7on">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tj15je">
+          <text>"Medium"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cvrnes">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wuyu6g">
+        <inputEntry id="UnaryTests_1rfbi3a">
+          <text>&lt;= 25</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cm5qtt">
+          <text>&lt; 110</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1prs9af">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ojombu">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0co76kc">
+          <text>&lt;= 1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03gcsl1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0he5hjl">
+          <text>"Medium"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rhske2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vt4j73">
+        <inputEntry id="UnaryTests_0fuy3w2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e3degj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12my34x">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zpia7h">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1i9s9f1">
+          <text>&lt;= 1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kprzr2">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09esdsx">
+          <text>"Low"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0o3e3k2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1t8ubvh">
+        <inputEntry id="UnaryTests_1p1dqdb">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mby459">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1v7ehv9">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sc5uat">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_179o085">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1w3xqol">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ovhxqf">
+          <text>"High"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_120bpax">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hzh8xe">
+        <inputEntry id="UnaryTests_0irt65w">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yd4bur">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tg5p93">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11idjh9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01hawhf">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mvjyty">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_154k627">
+          <text>"NOPE"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0uven4k">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="Decision_09xs2cb_di" dmnElementRef="DeterminePatientRiskLevel">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

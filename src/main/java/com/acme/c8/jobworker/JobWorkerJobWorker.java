@@ -1,6 +1,6 @@
 package com.acme.c8.jobworker;
 
-import com.acme.c8.jobworker.util.DmnEvaluator;
+import com.acme.c8.service.JobWorkerJobWorkerService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -19,42 +19,34 @@ public class JobWorkerJobWorker {
     private final JobWorkerJobWorkerService service;
 
     @JobWorker(type = "com.capbpm.c8.JobWorker.FindUser:v.1.1", fetchVariables = {"userId"})
-    public Map<String, Object> findUser(final ActivatedJob job, @Variable  String userId) {
-    final String  METHOD_NAME= "JobWorker.findUser";
-    Map<String,Object> inputVarMap = job.getVariablesAsMap();
-        log.trace(METHOD_NAME+" started...");
+    public Map<String, Object> findUser(final ActivatedJob job, @Variable String userId) {
+        final String METHOD_NAME = "JobWorker.findUser";
+        Map<String, Object> inputVarMap = job.getVariablesAsMap();
+        log.debug("{} started", METHOD_NAME);
 
         try {
             Map<String, Object> outputs = service.findUserImpl(userId);
-
-            log.trace(METHOD_NAME+" Finished.");
+            log.debug("{} finished", METHOD_NAME);
             return outputs;
         } catch (Exception e) {
-            log.trace(METHOD_NAME+" Error.");
-            throw new ZeebeBpmnError("ERR_CODE", e.getMessage(),inputVarMap);
+            log.error("{} failed", METHOD_NAME, e);
+            throw new ZeebeBpmnError("ERR_CODE", e.getMessage(), inputVarMap);
         }
     }
 
     @JobWorker(type = "com.capbpm.c8.JobWorker.filterPatients:v.1.1", fetchVariables = {"index"})
-    public Map<String, Object>  sift(final ActivatedJob job, @Variable  Integer index) {
-        final String  METHOD_NAME= "JobWorker.findUser";
-        Map<String,Object> inputVarMap = job.getVariablesAsMap();
-        log.trace(METHOD_NAME+" started...");
+    public Map<String, Object> sift(final ActivatedJob job, @Variable Integer index) {
+        final String METHOD_NAME = "JobWorker.filterPatients";
+        Map<String, Object> inputVarMap = job.getVariablesAsMap();
+        log.debug("{} started", METHOD_NAME);
 
         try {
-           long duration= DmnEvaluator.go(index);
-
-           Map<String, Object> outputs = new HashMap<>();
-           outputs.put("duration", duration);
-           System.out.println("duration="+duration);
-
-           // log.trace(METHOD_NAME+" Finished.");
-            return outputs;//n outputs;
+            Map<String, Object> outputs = service.filterPatients(index);
+            log.info("{} completed, duration={}s", METHOD_NAME, outputs.get("duration"));
+            return outputs;
         } catch (Exception e) {
-            log.trace(METHOD_NAME+" Error.");
-            throw new ZeebeBpmnError("ERR_CODE", e.getMessage(),inputVarMap);
+            log.error("{} failed", METHOD_NAME, e);
+            throw new ZeebeBpmnError("ERR_CODE", e.getMessage(), inputVarMap);
         }
     }
 }
-
-

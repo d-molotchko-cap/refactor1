@@ -8,15 +8,20 @@ spring:
 server:
   port: 8080
 
+patient:
+  api:
+    base-url: https://api.capbpm.com
+
 camunda:
   client:
     mode: saas
     auth:
       client-id: ${CAMUNDA_CLIENT_ID}
       client-secret: ${CAMUNDA_CLIENT_SECRET}
-    cluster-id: ${CAMUNDA_CLUSTER_ID}
-    region: ${CAMUNDA_REGION}
-    zeebe:
+    cloud:
+      cluster-id: ${CAMUNDA_CLUSTER_ID}
+      region: ${CAMUNDA_REGION}
+    worker:
       defaults:
         stream-enabled: true
 
@@ -35,9 +40,9 @@ management:
       enabled: true
     heapdump:
       enabled: true
-  metrics:
-    export:
-      simple:
+  simple:
+    metrics:
+      export:
         enabled: true
 
 # Custom Info for Actuator /info endpoint
