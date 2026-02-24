@@ -1,5 +1,6 @@
 package com.acme.c8;
 
+import com.acme.c8.util.MapUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ class UtilTest {
         customerList.add(createCustomer("first5", "last5", 45));
         variables.put("customers", customerList);
 
-        var result = Util.evaluateFeel("customers[age>10]", variables);
+        var result = MapUtil.evaluateFeel("customers[age>10]", variables);
 
         assertNotNull(result);
         System.out.println(result);
