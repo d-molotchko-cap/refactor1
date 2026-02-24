@@ -3,6 +3,7 @@ package com.acme.c8.worker;
 import com.acme.c8.client.PatientClient;
 import com.acme.c8.dmn.DmnEvaluator;
 import com.acme.c8.exception.DmnEvaluationException;
+import com.acme.c8.exception.InternalServerException;
 import com.acme.c8.exception.PatientLoadException;
 import io.camunda.client.annotation.JobWorker;
 import io.camunda.client.annotation.Variable;
@@ -50,13 +51,13 @@ public class PatientFilterWorker {
             return outputs;
         } catch (PatientLoadException e) {
             log.error("{} patient load error [code={}]: {}", METHOD_NAME, e.getErrorCode(), e.getMessage());
-            throw new ZeebeBpmnError(e.getErrorCode(), e.getMessage(), inputVarMap);
+            throw new InternalServerException(e.getMessage());
         } catch (DmnEvaluationException e) {
             log.error("{} DMN evaluation error [code={}]: {}", METHOD_NAME, e.getErrorCode(), e.getMessage());
-            throw new ZeebeBpmnError(e.getErrorCode(), e.getMessage(), inputVarMap);
+            throw new InternalServerException(e.getMessage());
         } catch (Exception e) {
             log.error("{} unexpected error: {}", METHOD_NAME, e.getMessage());
-            throw new ZeebeBpmnError("ERR_FILTER_PATIENTS_UNEXPECTED", e.getMessage(), inputVarMap);
+            throw new InternalServerException(e.getMessage());
         }
     }
 }
