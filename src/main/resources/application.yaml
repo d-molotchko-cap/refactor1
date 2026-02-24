@@ -40,6 +40,16 @@ management:
       simple:
         enabled: true
 
+app:
+  patient-client:
+    base-url: https://api.capbpm.com/api/patients
+  dmn:
+    patient-rule-file: PatientRule.dmn
+    patient-decision-id: DeterminePatientRiskLevel
+  worker:
+    find-user-type: com.capbpm.c8.JobWorker.FindUser:v.1.1
+    filter-patients-type: com.capbpm.c8.JobWorker.filterPatients:v.1.1
+
 # Custom Info for Actuator /info endpoint
 info:
   app:
