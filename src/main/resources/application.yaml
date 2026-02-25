@@ -14,8 +14,14 @@ camunda:
     auth:
       client-id: ${CAMUNDA_CLIENT_ID}
       client-secret: ${CAMUNDA_CLIENT_SECRET}
+      # For camunda-spring-boot-4-starter (8.8.9) you typically also need:
+      # token-url: https://login.cloud.camunda.io/oauth/token
     cluster-id: ${CAMUNDA_CLUSTER_ID}
     region: ${CAMUNDA_REGION}
+    # For SaaS, the starter can usually derive gRPC/REST endpoints from
+    # cluster-id and region, but if needed you can override explicitly:
+    # grpc-address: https://<your-grpc-endpoint>
+    # rest-address: https://<your-rest-endpoint>
     zeebe:
       defaults:
         stream-enabled: true
@@ -48,3 +54,9 @@ info:
     version: 1.0.0
     build:
       timestamp: ${maven.build.timestamp}
+
+patients:
+  api:
+    base-url: https://api.capbpm.com
+    path: /api/patients/load
+    default-page-size: 25

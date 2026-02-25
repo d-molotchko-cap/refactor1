@@ -1,7 +1,10 @@
 camunda:
   client:
     auth:
-      client-id: lsiLtfKAT.RBOBETuD3DWmuyFmxjMP4Vj
-      client-secret: L7uDYJ9SZDmMD0_Etvayn0DDt1nGuCvKsbkIdRMdjH_3QOE.c_14Swajocc~-Yhn-
-    cluster-id: 35d52cdf-7b23-4ba2-ad4d-ede62598483b
-    region: jfk-1
+      # NOTE: Do not commit real credentials. Use environment variables
+      # for local development as well, for example via a .env file or
+      # your IDE run configuration.
+      client-id: ${CAMUNDA_CLIENT_ID}
+      client-secret: ${CAMUNDA_CLIENT_SECRET}
+    cluster-id: ${CAMUNDA_CLUSTER_ID}
+    region: ${CAMUNDA_REGION}
