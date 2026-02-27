@@ -1,9 +1,12 @@
 package com.acme.c8.jobworker;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jspecify.annotations.NonNull;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,6 +16,9 @@ import java.util.Map;
 
 public class PatientClient {
 
+
+    // Better to move to the properties
+    public static final String URL = "https://api.capbpm.com/api/patients/load?page=%d&size=%d";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
@@ -22,8 +28,31 @@ public class PatientClient {
      */
     public static List<Map<String, Object>> loadPatients(int page, int size) throws Exception {
 
+        HttpResponse<String> response = processHttpRequest(page, size);
+
+        return parseObject(response);
+    }
+
+    private static List<Map<String, Object>> parseObject(HttpResponse<String> response) throws JsonProcessingException {
+        JsonNode root = MAPPER.readTree(response.body());
+
+        // Extract "content" array
+        JsonNode contentNode = root.get("content");
+        if (contentNode == null || !contentNode.isArray()) {
+            throw new IllegalStateException("Response does not contain a valid 'content' array");
+        }
+
+        // Convert to List<Map<String, Object>>
+        return MAPPER.convertValue(
+                contentNode,
+                new TypeReference<>() {
+                }
+        );
+    }
+
+    private static @NonNull HttpResponse<String> processHttpRequest(int page, int size) throws IOException, InterruptedException {
         String url = String.format(
-                "https://api.capbpm.com/api/patients/load?page=%d&size=%d",
+                URL,
                 page,
                 size
         );
@@ -42,20 +71,7 @@ public class PatientClient {
             );
         }
 
-        // Parse full JSON response
-        JsonNode root = MAPPER.readTree(response.body());
-
-        // Extract "content" array
-        JsonNode contentNode = root.get("content");
-        if (contentNode == null || !contentNode.isArray()) {
-            throw new IllegalStateException("Response does not contain a valid 'content' array");
-        }
-
-        // Convert to List<Map<String, Object>>
-        return MAPPER.convertValue(
-                contentNode,
-                new TypeReference<List<Map<String, Object>>>() {}
-        );
+        return response;
     }
 
     // Example usage
@@ -63,6 +79,6 @@ public class PatientClient {
         List<Map<String, Object>> patients = loadPatients(0, 25);
 
         System.out.println("Loaded patients: " + patients.size());
-        System.out.println("First patient riskLevel: " + patients.get(0).get("riskLevel"));
+        System.out.println("First patient riskLevel: " + patients.getFirst().get("riskLevel"));
     }
 }
