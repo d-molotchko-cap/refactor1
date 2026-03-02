@@ -1,6 +1,4 @@
-package com.acme.c8.jobworker.util;
-
-
+package com.acme.c8.util;
 
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnDecisionResult;
@@ -15,7 +13,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class DmnAndFeelEvaluator {
-
 
     private static final DefaultDmnEngineConfiguration CONFIG = (DefaultDmnEngineConfiguration) DefaultDmnEngineConfiguration.createDefaultDmnEngineConfiguration();
 
@@ -65,11 +62,9 @@ public class DmnAndFeelEvaluator {
       //  org.camunda.feel.context.Context context = org.camunda.feel.context.Contex of(variables);
       //  VariableContext context = VariableContext.fromMap(variables);
 
-
-        VariableContext context=null;
+        VariableContext context = null;
         return FEEL_ENGINE.evaluateSimpleExpression(expression, context);
      //   return FEEL_ENGINE.evaluateSimpleExpression(expression, variables);
-
     }
 
     /* -------------------------

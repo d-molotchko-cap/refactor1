@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" id="PatientRiskDecisions" name="PatientRiskDecisions" namespace="http://capbpm.com/dmn/patient-risk" exporter="Camunda Modeler" exporterVersion="5.42.0">
+  <decision id="DeterminePatientRiskLevel" name="Determine Patient Risk Level">
+    <decisionTable id="DecisionTable_PatientRisk" hitPolicy="FIRST">
+      <input id="Input_bmi">
+        <inputExpression typeRef="integer">
+          <text>patient.bmi</text>
+        </inputExpression>
+      </input>
+      <input id="Input_glucose">
+        <inputExpression typeRef="integer">
+          <text>patient.glucoseLevel</text>
+        </inputExpression>
+      </input>
+      <input id="Input_diabetes">
+        <inputExpression typeRef="boolean">
+          <text>patient.hasDiabetes</text>
+        </inputExpression>
+      </input>
+      <input id="Input_hypertension">
+        <inputExpression typeRef="boolean">
+          <text>patient.hasHypertension</text>
+        </inputExpression>
+      </input>
+      <input id="Input_erVisits">
+        <inputExpression typeRef="integer">
+          <text>patient.erVisitsLast12Months</text>
+        </inputExpression>
+      </input>
+      <input id="Input_medAdherent">
+        <inputExpression typeRef="boolean">
+          <text>patient.medicationAdherent</text>
+        </inputExpression>
+      </input>
+      <output id="Output_riskLevel" name="riskLevel" typeRef="string" />
+      <output id="Output_highReadmissionRisk" name="highReadmissionRisk" typeRef="boolean" />
+      <rule id="Rule_1">
+        <inputEntry>
+          <text>&gt; 30</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&gt; 140</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&gt;= 1</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <outputEntry>
+          <text>"High"</text>
+        </outputEntry>
+        <outputEntry>
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_2">
+        <inputEntry>
+          <text>&gt; 30</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&gt; 140</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&lt; 1</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <outputEntry>
+          <text>"Medium"</text>
+        </outputEntry>
+        <outputEntry>
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_3">
+        <inputEntry>
+          <text>&lt;= 25</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&lt; 110</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <inputEntry>
+          <text>false</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&lt;= 1</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <outputEntry>
+          <text>"Medium"</text>
+        </outputEntry>
+        <outputEntry>
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_4">
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>false</text>
+        </inputEntry>
+        <inputEntry>
+          <text>false</text>
+        </inputEntry>
+        <inputEntry>
+          <text>&lt;= 1</text>
+        </inputEntry>
+        <inputEntry>
+          <text>true</text>
+        </inputEntry>
+        <outputEntry>
+          <text>"Low"</text>
+        </outputEntry>
+        <outputEntry>
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_5">
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>-</text>
+        </inputEntry>
+        <inputEntry>
+          <text>false</text>
+        </inputEntry>
+        <outputEntry>
+          <text>"High"</text>
+        </outputEntry>
+        <outputEntry>
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jnevm9">
+        <inputEntry id="UnaryTests_1dp2lgh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1txsf48">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18bjp64">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gw2tqd">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s4tzgw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15r469j">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gky55t">
+          <text>"NOPE"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15ufr2y">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_101qtvl">
+      <dmndi:DMNShape id="DMNShape_0k0dtv1" dmnElementRef="DeterminePatientRiskLevel">
+        <dc:Bounds height="80" width="180" x="150" y="150" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

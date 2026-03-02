@@ -1,4 +1,4 @@
-package com.acme.c8.jobworker.util;
+package com.acme.c8.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.camunda.bpm.dmn.engine.DmnDecision;
@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.acme.c8.jobworker.PatientClient.loadPatients;
 
 public class DmnEvaluator {
 
@@ -73,7 +71,6 @@ public class DmnEvaluator {
         return toJsonFromList(resList);
     }
 
-
     /**
      * Load and cache a DMN decision if not already cached.
      */
@@ -128,17 +125,11 @@ public class DmnEvaluator {
         }
     }
 
-
-
-
-
-
     /* -------------------------
        DEMO
        ------------------------- */
 
-    public static Map<String,Object >  getSampplePatnet()
-    {
+    public static Map<String, Object> getSampplePatnet() {
         Map<String, Object> patient = new HashMap<>();
 
         patient.put("id", 1L);
@@ -171,8 +162,7 @@ public class DmnEvaluator {
         return patient;
     }
 
-    public static Map<String,Object >  getSampplePatnetLow()
-    {
+    public static Map<String, Object> getSampplePatnetLow() {
         Map<String, Object> patient = new HashMap<>();
 
         patient.put("id", 1L);
@@ -206,20 +196,17 @@ public class DmnEvaluator {
     }
 
     public static void main(String[] args) throws Exception {
-
-        go(0);
+        go(List.of(getSampplePatnet(), getSampplePatnetLow()));
     }
-    public static long go(int pageIndex) throws Exception {
 
-        List<Map<String, Object>>patientList  = loadPatients(pageIndex,1000);
+    public static long go(List<Map<String, Object>> patientList) throws Exception {
         int size = patientList.size();
         System.out.println("Loaded patients: " + size);
         String patientRuleFile = "PatientRule.dmn";
         String did = "DeterminePatientRiskLevel";
 
-
         long start = System.currentTimeMillis();
-        String ruleResult = evaluateToJsonForList(patientRuleFile,did,patientList);
+        String ruleResult = evaluateToJsonForList(patientRuleFile, did, patientList);
         long end = System.currentTimeMillis();
 
         long duration = (end - start) / 1000;
