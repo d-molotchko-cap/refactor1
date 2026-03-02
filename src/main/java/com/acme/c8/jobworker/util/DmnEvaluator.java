@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnDecisionResult;
 import org.camunda.bpm.dmn.engine.DmnEngine;
-import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
+import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
 
@@ -17,9 +17,8 @@ import static com.acme.c8.jobworker.PatientClient.loadPatients;
 
 public class DmnEvaluator {
 
-    private static final DefaultDmnEngineConfiguration CONFIG =
-            (DefaultDmnEngineConfiguration)
-                    DefaultDmnEngineConfiguration.createDefaultDmnEngineConfiguration();
+    private static final DmnEngineConfiguration CONFIG =
+            DmnEngineConfiguration.createDefaultDmnEngineConfiguration();
 
     private static final DmnEngine DMN_ENGINE =
             CONFIG.buildEngine();
@@ -219,7 +218,7 @@ public class DmnEvaluator {
 
 
         long start = System.currentTimeMillis();
-        String ruleResult = evaluateToJsonForList(patientRuleFile,did,patientList);
+        evaluateToJsonForList(patientRuleFile, did, patientList);
         long end = System.currentTimeMillis();
 
         long duration = (end - start) / 1000;

@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.5</version>
+    <version>4.0.2</version>
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -14,9 +14,8 @@
   <name>jobworker</name>
   <description>Project for Camunda8 platform</description>
   <properties>
-    <java.version>17</java.version>
-    <spring-cloud.version>2023.0.0</spring-cloud.version>
-    <spring-zeebe.version>8.6.4</spring-zeebe.version>
+    <java.version>21</java.version>
+    <spring-cloud.version>2024.0.2</spring-cloud.version>
   </properties>
   <dependencies>
     <dependency>
@@ -34,6 +33,11 @@
           <artifactId>camunda-engine-feel-juel</artifactId>
           <version>7.24.0</version>
       </dependency>
+      <dependency>
+          <groupId>org.camunda.feel</groupId>
+          <artifactId>feel-engine</artifactId>
+          <version>1.19.0</version>
+      </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-config</artifactId>
@@ -44,8 +48,8 @@
     </dependency>
     <dependency>
       <groupId>io.camunda</groupId>
-      <artifactId>spring-boot-starter-camunda-sdk</artifactId>
-      <version>8.6.4</version>
+      <artifactId>camunda-spring-boot-4-starter</artifactId>
+      <version>8.8.9</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -71,6 +75,33 @@
   </dependencyManagement>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-toolchains-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>toolchain</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <toolchains>
+                <jdk>
+                  <version>21</version>
+                </jdk>
+              </toolchains>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <release>21</release>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

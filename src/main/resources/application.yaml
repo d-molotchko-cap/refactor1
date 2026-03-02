@@ -14,9 +14,10 @@ camunda:
     auth:
       client-id: ${CAMUNDA_CLIENT_ID}
       client-secret: ${CAMUNDA_CLIENT_SECRET}
-    cluster-id: ${CAMUNDA_CLUSTER_ID}
-    region: ${CAMUNDA_REGION}
-    zeebe:
+    cloud:
+      cluster-id: ${CAMUNDA_CLUSTER_ID}
+      region: ${CAMUNDA_REGION}
+    worker:
       defaults:
         stream-enabled: true
 
