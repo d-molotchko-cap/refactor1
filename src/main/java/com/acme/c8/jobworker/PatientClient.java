@@ -57,12 +57,12 @@ public class PatientClient {
                 new TypeReference<List<Map<String, Object>>>() {}
         );
     }
-
+/*
     // Example usage
     public static void main(String[] args) throws Exception {
         List<Map<String, Object>> patients = loadPatients(0, 25);
 
         System.out.println("Loaded patients: " + patients.size());
         System.out.println("First patient riskLevel: " + patients.get(0).get("riskLevel"));
-    }
+    }*/
 }
