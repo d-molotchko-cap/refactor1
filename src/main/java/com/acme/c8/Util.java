@@ -1,15 +1,11 @@
 package com.acme.c8;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.camunda.feel.api.FeelEngineApi;
 import org.camunda.feel.api.FeelEngineBuilder;
-import org.camunda.feel.api.SuccessfulEvaluationResult;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +69,7 @@ public class Util {
             return "";
         }
     }
+    @SuppressWarnings("unchecked")
     public static Map<String,Object> getMapValue(Map<String,Object> m, String key) {
         Map<String,Object> retval=null;
         Object o=m.get(key);
