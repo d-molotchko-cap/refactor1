@@ -1,13 +1,13 @@
 package com.acme.c8;
 
-import org.springframework.boot.actuate.health.Health;
+/*import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;*/
 
-@Component
-public class MyCustomHealthIndicator implements HealthIndicator {
+//@Component
+public class MyCustomHealthIndicator /*implements HealthIndicator*/ {
 
-    @Override
+    /*@Override
     public Health health() {
         // Custom logic to check health, e.g., external API or DB check
         boolean serviceRunning = checkMyService();
@@ -22,5 +22,5 @@ public class MyCustomHealthIndicator implements HealthIndicator {
     private boolean checkMyService() {
         // Simulate some logic to determine if the service is running
         return true;
-    }
+    }*/
 }
