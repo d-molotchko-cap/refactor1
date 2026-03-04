@@ -229,4 +229,9 @@ public class DmnEvaluator {
 
         return duration;
     }
+
+    public static long evaluatePatientRules(Integer index) {
+        //todo: implement
+        return 0;
+    }
 }
