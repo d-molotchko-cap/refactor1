@@ -15,18 +15,14 @@ public class PatientClient {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+    private static final String BASE_URL = "https://api.capbpm.com/api/patients/load";
 
     /**
      * Calls the patients API and returns the "content" array
      * as a List<Map<String, Object>>.
      */
     public static List<Map<String, Object>> loadPatients(int page, int size) throws Exception {
-
-        String url = String.format(
-                "https://api.capbpm.com/api/patients/load?page=%d&size=%d",
-                page,
-                size
-        );
+        String url = String.format("%s?page=%d&size=%d", BASE_URL, page, size);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -37,9 +33,7 @@ public class PatientClient {
                 HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new IllegalStateException(
-                    "Failed to load patients. HTTP " + response.statusCode()
-            );
+            throw new IllegalStateException("Failed to load patients. HTTP " + response.statusCode());
         }
 
         // Parse full JSON response
