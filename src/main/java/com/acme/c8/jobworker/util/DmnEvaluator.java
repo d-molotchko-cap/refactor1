@@ -1,6 +1,7 @@
 package com.acme.c8.jobworker.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnDecisionResult;
 import org.camunda.bpm.dmn.engine.DmnEngine;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.acme.c8.jobworker.PatientClient.loadPatients;
 
+@Slf4j
 public class DmnEvaluator {
 
     private static final DefaultDmnEngineConfiguration CONFIG =
@@ -35,7 +37,7 @@ public class DmnEvaluator {
             new ConcurrentHashMap<>();
 
     /**
-     * Evaluate a DMN decision and return the result as JSON.
+     * Evaluate a DMN decision and return the result as JSON. - Single input
      */
     public static String evaluateToJson(
             String dmnFile,
@@ -53,20 +55,26 @@ public class DmnEvaluator {
         return toJson(result);
     }
 
+    /**
+     * Evaluates a DMN decision for multiple inputs
+     * @param dmnFile
+     * @param decisionId
+     * @param pList
+     * @return
+     */
     public static String evaluateToJsonForList(
             String dmnFile,
             String decisionId,
             List<Map<String, Object>> pList) {
 
-        List<DmnDecisionResult> resList = new ArrayList<DmnDecisionResult>();
+        List<DmnDecisionResult> resList = new ArrayList<>();
         DmnDecision decision = getOrLoadDecision(dmnFile, decisionId);
 
         VariableMap variables = Variables.createVariables();
         for (Map<String, Object> inputVariables : pList) {
             inputVariables.forEach(variables::putValue);
 
-            DmnDecisionResult result =
-                    DMN_ENGINE.evaluateDecision(decision, variables);
+            DmnDecisionResult result = DMN_ENGINE.evaluateDecision(decision, variables);
 
             resList.add(result);
         }
@@ -137,20 +145,9 @@ public class DmnEvaluator {
        DEMO
        ------------------------- */
 
-    public static Map<String,Object >  getSampplePatnet()
+    public static Map<String,Object >  getSamplePatientHigh()
     {
-        Map<String, Object> patient = new HashMap<>();
-
-        patient.put("id", 1L);
-        patient.put("memberId", "M-1108257d01d14a11946f1a102ef22a91");
-        patient.put("firstName", "Charlotte");
-        patient.put("lastName", "Brown");
-        patient.put("dateOfBirth", LocalDate.parse("1976-07-10"));
-        patient.put("gender", "Non-binary");
-        patient.put("address", "9552 Oak St");
-        patient.put("city", "Boston");
-        patient.put("state", "MA");
-        patient.put("zipCode", "87785");
+        Map<String, Object> patient = makeGenericPatientInfo();
 
         patient.put("bmi", 37.9);
         patient.put("glucoseLevel", 146.7);
@@ -171,20 +168,9 @@ public class DmnEvaluator {
         return patient;
     }
 
-    public static Map<String,Object >  getSampplePatnetLow()
+    public static Map<String,Object >  getSamplePatientLow()
     {
-        Map<String, Object> patient = new HashMap<>();
-
-        patient.put("id", 1L);
-        patient.put("memberId", "M-1108257d01d14a11946f1a102ef22a91");
-        patient.put("firstName", "Charlotte");
-        patient.put("lastName", "Brown");
-        patient.put("dateOfBirth", LocalDate.parse("1976-07-10"));
-        patient.put("gender", "Non-binary");
-        patient.put("address", "9552 Oak St");
-        patient.put("city", "Boston");
-        patient.put("state", "MA");
-        patient.put("zipCode", "87785");
+        Map<String, Object> patient = makeGenericPatientInfo();
 
         patient.put("bmi", 20);
         patient.put("glucoseLevel", 100);
@@ -205,28 +191,80 @@ public class DmnEvaluator {
         return patient;
     }
 
-    public static void main(String[] args) throws Exception {
+    private static Map<String, Object> makeGenericPatientInfo() {
+        Map<String, Object> patient = new HashMap<>();
 
+        patient.put("id", 1L);
+        patient.put("memberId", "M-1108257d01d14a11946f1a102ef22a91");
+        patient.put("firstName", "Charlotte");
+        patient.put("lastName", "Brown");
+        patient.put("dateOfBirth", LocalDate.parse("1976-07-10"));
+        patient.put("gender", "Non-binary");
+        patient.put("address", "9552 Oak St");
+        patient.put("city", "Boston");
+        patient.put("state", "MA");
+        patient.put("zipCode", "87785");
+        return patient;
+    }
+
+    public static void main(String[] args) throws Exception {
         go(0);
     }
-    public static long go(int pageIndex) throws Exception {
 
-        List<Map<String, Object>>patientList  = loadPatients(pageIndex,1000);
+    private static List<Map<String, Object>> loadPatientListFromAPI(int pageIndex, int pageSize) throws Exception {
+        List<Map<String, Object>> patientList  = loadPatients(pageIndex,pageSize);
         int size = patientList.size();
-        System.out.println("Loaded patients: " + size);
+
+        log.info("Loaded patients: {}", size);
+        return patientList;
+    }
+
+    public static long go(int pageIndex) throws Exception {
         String patientRuleFile = "PatientRule.dmn";
         String did = "DeterminePatientRiskLevel";
 
+//        var patientList = loadPatientListFromAPI(pageIndex, 1000);
+//        long start = System.currentTimeMillis();
+//        String ruleResult = evaluateToJsonForList(patientRuleFile,did,patientList);
+//        long end = System.currentTimeMillis();
 
-        long start = System.currentTimeMillis();
-        String ruleResult = evaluateToJsonForList(patientRuleFile,did,patientList);
-        long end = System.currentTimeMillis();
+//        long duration = (end - start) / 1000;
 
-        long duration = (end - start) / 1000;
+//        log.info("Time taken to evaluate in seconds: {}", duration);
+//        log.info(ruleResult);
 
-      //  System.out.println("Time taken to evaluate in seconds: " + duration);
-    //    System.out.println(ruleResult);
+
+        //TODO These can be extracted to a method
+        log.info("===Patient HIGH===");
+        var samplePatientHigh = getSamplePatientHigh();
+
+        var start = System.currentTimeMillis();
+        String ruleResult = evaluateToJson(patientRuleFile, did, samplePatientHigh);
+        var end = System.currentTimeMillis();
+
+
+        var duration = (end - start) / 1000;
+
+        log.info("Time taken to evaluate in seconds: {}", duration);
+        log.info(ruleResult);
+
+
+        log.info("===Patient LOW===");
+        var samplePatientLow = getSamplePatientLow();
+
+        start = System.currentTimeMillis();
+        ruleResult = evaluateToJson(patientRuleFile, did, samplePatientLow);
+        end = System.currentTimeMillis();
+
+
+        duration = (end - start) / 1000;
+
+        log.info("Time taken to evaluate in seconds: {}", duration);
+        log.info(ruleResult);
 
         return duration;
     }
+
+
+
 }

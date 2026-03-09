@@ -1,7 +1,8 @@
 package com.acme.c8;
 
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import com.acme.c8.jobworker.PatientClient;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,14 +14,18 @@ public class MyCustomHealthIndicator implements HealthIndicator {
         boolean serviceRunning = checkMyService();
 
         if (serviceRunning) {
-            return Health.up().withDetail("service", "Available").build();
+            return Health.up().withDetail("PatientService", "Available").build();
         } else {
-            return Health.down().withDetail("service", "Not Available").build();
+            return Health.down().withDetail("PatientService", "Not Available").build();
         }
     }
 
     private boolean checkMyService() {
-        // Simulate some logic to determine if the service is running
+        try {
+            PatientClient.loadPatients(0, 1);
+        } catch (Exception e) {
+            return false;
+        }
         return true;
     }
 }

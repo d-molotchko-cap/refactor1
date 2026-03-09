@@ -3,6 +3,10 @@ package com.acme.c8.jobworker;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,10 +15,22 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Slf4j
+@AllArgsConstructor
 public class PatientClient {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+//    private static final ObjectMapper MAPPER = new ObjectMapper();
+//    private final HttpClient httpClient = HttpClient.newHttpClient();
+
+    private final ObjectMapper objectMapper;
+    private final HttpClient httpClient;
+
+    @Bean
+    public HttpClient makeHttpClient() {
+        return HttpClient.newHttpClient();
+    }
+
 
     /**
      * Calls the patients API and returns the "content" array
@@ -22,6 +38,8 @@ public class PatientClient {
      */
     public static List<Map<String, Object>> loadPatients(int page, int size) throws Exception {
 
+        //Start with a client which has the base URL https://api.capbpm.com/api
+        //continue with appending Query Parameters with the http client methods
         String url = String.format(
                 "https://api.capbpm.com/api/patients/load?page=%d&size=%d",
                 page,
@@ -33,13 +51,10 @@ public class PatientClient {
                 .GET()
                 .build();
 
-        HttpResponse<String> response =
-                HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new IllegalStateException(
-                    "Failed to load patients. HTTP " + response.statusCode()
-            );
+            throw new IllegalStateException("Failed to load patients. HTTP " + response.statusCode());
         }
 
         // Parse full JSON response
@@ -54,15 +69,15 @@ public class PatientClient {
         // Convert to List<Map<String, Object>>
         return MAPPER.convertValue(
                 contentNode,
-                new TypeReference<List<Map<String, Object>>>() {}
+                new TypeReference<>() {}
         );
     }
 
-    // Example usage
-    public static void main(String[] args) throws Exception {
-        List<Map<String, Object>> patients = loadPatients(0, 25);
-
-        System.out.println("Loaded patients: " + patients.size());
-        System.out.println("First patient riskLevel: " + patients.get(0).get("riskLevel"));
-    }
+//    // Example usage
+//    public static void main(String[] args) throws Exception {
+//        List<Map<String, Object>> patients = loadPatients(0, 25);
+//
+//        log.info("Loaded patients: {}", patients.size());
+//        log.info("First patient riskLevel: {}", patients.getFirst().get("riskLevel"));
+//    }
 }

@@ -2,6 +2,7 @@ package com.acme.c8.jobworker.util;
 
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.dmn.engine.DmnDecision;
 import org.camunda.bpm.dmn.engine.DmnDecisionResult;
 import org.camunda.bpm.dmn.engine.DmnEngine;
@@ -14,6 +15,7 @@ import org.camunda.bpm.engine.variable.context.VariableContext;
 import java.io.InputStream;
 import java.util.Map;
 
+@Slf4j
 public class DmnAndFeelEvaluator {
 
 
@@ -62,14 +64,8 @@ public class DmnAndFeelEvaluator {
             String expression,
             Map<String, Object> variables) {
 
-      //  org.camunda.feel.context.Context context = org.camunda.feel.context.Contex of(variables);
-      //  VariableContext context = VariableContext.fromMap(variables);
-
-
-        VariableContext context=null;
+        VariableContext context = Variables.fromMap(variables).asVariableContext();
         return FEEL_ENGINE.evaluateSimpleExpression(expression, context);
-     //   return FEEL_ENGINE.evaluateSimpleExpression(expression, variables);
-
     }
 
     /* -------------------------
@@ -78,27 +74,27 @@ public class DmnAndFeelEvaluator {
 
     public static void main(String[] args) {
 
-        System.out.println("DMN: " + evaluateUserIsFound("007"));
+        log.info("DMN: {}", evaluateUserIsFound("007"));
 
-        System.out.println("FEEL 1: " +
+        log.info("FEEL 1: {}",
                 evaluateFeel(
                         "userId = \"007\"",
                         Map.of("userId", "007")
                 )
         );
 
-//        System.out.println("FEEL 2: " +
-//                evaluateFeel(
-//                        "if score >= 90 then \"A\" else \"B\"",
-//                        Map.of("score", 95)
-//                )
-//        );
-//
-//        System.out.println("FEEL 3: " +
-//                evaluateFeel(
-//                        "sum(items)",
-//                        Map.of("items", java.util.List.of(10, 20, 30))
-//                )
-//        );
+        log.info("FEEL 2: {}",
+                evaluateFeel(
+                        "if score >= 90 then \"A\" else \"B\"",
+                        Map.of("score", 95)
+                )
+        );
+
+        log.info("FEEL 3: {}",
+                evaluateFeel(
+                        "sum(items)",
+                        Map.of("items", java.util.List.of(10, 20, 30))
+                )
+        );
     }
 }

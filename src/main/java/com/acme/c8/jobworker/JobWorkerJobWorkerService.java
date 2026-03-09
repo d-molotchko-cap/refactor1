@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class JobWorkerJobWorkerService {
 
-    public Map<String, Object> findUserImpl(  String userId) {
+    public static Map<String, Object> findUserImpl(  String userId) {
         Map<String, Object> outputs = new HashMap<>();
         Boolean tmp = DmnAndFeelEvaluator.evaluateUserIsFound(userId);
         outputs.put("isFound", tmp);
@@ -17,6 +17,9 @@ public class JobWorkerJobWorkerService {
     }
 
     public static void main(String[] args) {
-        System.out.println("DMN evaluator starting...");
+        log.info("DMN evaluator starting...");
+
+        log.info("Find user with id 1. Result is {}", findUserImpl("1"));
+        log.info("Find user with id 007. Result is {}", findUserImpl("007"));
     }
 }

@@ -1,22 +1,23 @@
 package com.acme.c8;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.feel.api.FeelEngineApi;
 import org.camunda.feel.api.FeelEngineBuilder;
-import org.camunda.feel.api.SuccessfulEvaluationResult;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class Util {
     public static void setMapValue(Map<String, Object> map, Object key, Object value) {
-        if (map == null || key == null || value == null) return;
+        if (map == null || key == null || value == null) {
+            return;
+        }
 
         String k = key.toString();
         String v = value.toString();
@@ -32,12 +33,14 @@ public class Util {
 
         map.put(k, v);
     }
+
     public static String toPrettyJson(HashMap<String, Object> variables) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         String prettyJson = objectMapper.writeValueAsString(variables);
         return prettyJson;
     }
+
     public static String parseBoolean(Map<String, Object> m, String key) {
         String retval = "false";
         try {
@@ -56,38 +59,42 @@ public class Util {
                     }
                 }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Exception occured while parsing boolean.", e);
         }
+
         return retval;
     }
+
     public static String getStringValue(Map<String,Object> m, String key) {
         Object o=m.get(key);
-        if (o!=null)
-        {
+        if (o!=null) {
             return o.toString();
         }
-        else
-        {
+        else {
             return "";
         }
     }
+
     public static Map<String,Object> getMapValue(Map<String,Object> m, String key) {
-        Map<String,Object> retval=null;
-        Object o=m.get(key);
-        if (o!=null && o instanceof Map)
-        {
+        Map<String, Object> retval = null;
+        Object o = m.get(key);
+
+        if (o instanceof Map) {
+            //TODO Okay, but we are not sure we can cast towards Map<String, Object> further checks are needed
             retval = (Map<String, Object>) o;
         }
+
         return retval;
     }
 
     public static List<Object> getListValue(Map<String,Object> m, String key) {
         List<Object> retval=null;
-        Object o=m.get(key);
-        if (o!=null && o instanceof List)
-        {
+
+        Object o = m.get(key);
+
+        if (o instanceof List) {
+            //TODO Okay, here we can cast towards List<Object>
             retval = (List<Object>) o;
         }
         return retval;

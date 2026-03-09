@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" id="PatientRiskDecisions" name="PatientRiskDecisions" namespace="http://capbpm.com/dmn/patient-risk" exporter="Camunda Modeler" exporterVersion="5.42.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" id="PatientRiskDecisions" name="PatientRiskDecisions" namespace="http://capbpm.com/dmn/patient-risk" exporter="Camunda Modeler" exporterVersion="5.44.0">
   <decision id="DeterminePatientRiskLevel" name="Determine Patient Risk Level">
     <decisionTable id="DecisionTable_PatientRisk" hitPolicy="FIRST">
       <input id="Input_bmi">
-        <inputExpression typeRef="integer">
-          <text>patient.bmi</text>
+        <inputExpression typeRef="double">
+          <text>bmi</text>
         </inputExpression>
       </input>
       <input id="Input_glucose">
-        <inputExpression typeRef="integer">
-          <text>patient.glucoseLevel</text>
+        <inputExpression typeRef="double">
+          <text>glucoseLevel</text>
         </inputExpression>
       </input>
       <input id="Input_diabetes">
         <inputExpression typeRef="boolean">
-          <text>patient.hasDiabetes</text>
+          <text>hasDiabetes</text>
         </inputExpression>
       </input>
       <input id="Input_hypertension">
         <inputExpression typeRef="boolean">
-          <text>patient.hasHypertension</text>
+          <text>hasHypertension</text>
         </inputExpression>
       </input>
       <input id="Input_erVisits">
         <inputExpression typeRef="integer">
-          <text>patient.erVisitsLast12Months</text>
+          <text>erVisitsLast12Months</text>
         </inputExpression>
       </input>
       <input id="Input_medAdherent">
         <inputExpression typeRef="boolean">
-          <text>patient.medicationAdherent</text>
+          <text>medicationAdherent</text>
         </inputExpression>
       </input>
       <output id="Output_riskLevel" name="riskLevel" typeRef="string" />
