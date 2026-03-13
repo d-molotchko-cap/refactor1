@@ -4,9 +4,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.5</version>
+    <version>4.0.2</version>
     <relativePath/>
-    <!-- lookup parent from repository -->
   </parent>
   <groupId>com.acme.c8</groupId>
   <artifactId>refactor1</artifactId>
@@ -14,29 +13,31 @@
   <name>jobworker</name>
   <description>Project for Camunda8 platform</description>
   <properties>
-    <java.version>17</java.version>
-    <spring-cloud.version>2023.0.0</spring-cloud.version>
-    <spring-zeebe.version>8.6.4</spring-zeebe.version>
+    <java.version>21</java.version>
+    <spring-cloud.version>2025.0.0</spring-cloud.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-      <dependency>
-          <groupId>org.camunda.bpm.dmn</groupId>
-          <artifactId>camunda-engine-dmn</artifactId>
-          <version>7.24.0</version>
-      </dependency>
-
-      <dependency>
-          <groupId>org.camunda.bpm.dmn</groupId>
-          <artifactId>camunda-engine-feel-juel</artifactId>
-          <version>7.24.0</version>
-      </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.dmn</groupId>
+      <artifactId>camunda-engine-dmn</artifactId>
+      <version>7.24.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.dmn</groupId>
+      <artifactId>camunda-engine-feel-juel</artifactId>
+      <version>7.24.0</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -44,8 +45,8 @@
     </dependency>
     <dependency>
       <groupId>io.camunda</groupId>
-      <artifactId>spring-boot-starter-camunda-sdk</artifactId>
-      <version>8.6.4</version>
+      <artifactId>camunda-spring-boot-4-starter</artifactId>
+      <version>8.8.9</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -1,3 +1,7 @@
+patient:
+  api:
+    url: https://api.capbpm.com
+
 spring:
   application:
     name: my-jobworker
